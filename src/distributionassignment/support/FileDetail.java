@@ -20,7 +20,8 @@ public class FileDetail {
         this.rateCount = 1;
     }
     
-    public void setFileRate(double rate) {
+    public void setFileRate(double rate, int rateCount) {
+        this.rateCount = rateCount;
         if(this.rate == -1) {
             this.rate = rate;
         } else {

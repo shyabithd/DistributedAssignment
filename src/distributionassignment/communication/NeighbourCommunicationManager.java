@@ -104,7 +104,7 @@ public class NeighbourCommunicationManager {
                 }
                 if(file.getCommentList().isEmpty() != true) {
                     for (String comment : file.getCommentList()) {
-                        commentFileInNetwork(file.getFileName().replace(" ", "_"), comment, distributorNode);
+                        commentFileInNetwork(file.getFileName().replace(" ", "_"), comment.replace(" ", "_"), distributorNode);
                     }
                 }
             }
@@ -346,12 +346,15 @@ public class NeighbourCommunicationManager {
             String name = tokens[4].trim();
             String fileName = tokens[5].trim().replace("_", " ");
             String rateStr = tokens[6].trim();
+            String rateCntStr = tokens[7].trim();
             double fileRate = 0;
-            String hops = tokens[7].trim();
-            String reqId = tokens[8].trim();
+            String hops = tokens[8].trim();
+            String reqId = tokens[9].trim();
             int hopsCount = 0;
             int portNum = 0;
+            int rateCount = 1;
             try {
+                rateCount = Integer.parseInt(rateCntStr);
                 hopsCount = Integer.parseInt(hops) + 1;
                 portNum = Integer.parseInt(port);
                 fileRate = Double.parseDouble(rateStr);
@@ -370,7 +373,7 @@ public class NeighbourCommunicationManager {
                     if (localStore.size() > 0) {
                         
                         for (FileDetail file : localStore) {
-                            file.setFileRate(fileRate);
+                            file.setFileRate(fileRate, rateCount);
                         }
                         //length RATEOK fileName rate IP port name hops filename1 filename2
                         String messageToSend = commonSupport.generateMessageToSend(RATEOK
@@ -401,6 +404,7 @@ public class NeighbourCommunicationManager {
                                 , name
                                 , fileName.replace(" ", "_")
                                 , rateStr
+                                , rateCntStr
                                 , String.valueOf(hopsCount)
                                 , reqId);
                         forwardSearchMessageToRoutingTable(messageToSend, distributorNode);
@@ -490,13 +494,13 @@ public class NeighbourCommunicationManager {
 
                     if (hopsCount < 10) {
                         // Forward the request to RT
-                        // we need to forward the request as flooding, then without anonymity forward the result
+                        // we need to forwardleave the request as flooding, then without anonymity forward the result
                         String messageToSend = commonSupport.generateMessageToSend(COMMENT
                                 , ip
                                 , port
                                 , name
                                 , fileName.replace(" ", "_")
-                                , comment
+                                , comment.replace(" ", "_")
                                 , String.valueOf(hopsCount)
                                 , reqId);
                         forwardSearchMessageToRoutingTable(messageToSend, distributorNode);

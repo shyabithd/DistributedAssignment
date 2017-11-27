@@ -22,7 +22,7 @@ public class FileSearch {
         ArrayList<FileDetail> localStore = searchLocalStore(fileName);
         int rateCount = 1;
         for (FileDetail file : localStore) {
-            file.setFileRate(Double.parseDouble(fileRate));
+            file.setFileRate(Double.parseDouble(fileRate), file.getFileRateCount());
             rateCount = file.getFileRateCount();
         }
         distributor.getNeighbourCommunicationManager().rateFileInNetwork(fileName.replace(" ", "_"), fileRate, rateCount, distributor);

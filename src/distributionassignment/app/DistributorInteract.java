@@ -98,7 +98,7 @@ public class DistributorInteract {
                     distributorNode.setIsDebugMode(true);
                     
                     String fileName = command.substring(command.indexOf(" ")+1, command.indexOf("\"")-1);
-                    String comment = command.substring(command.indexOf("\""), command.length());
+                    String comment = distributorNode.getNodeIdentifier()+command.substring(command.indexOf("\""), command.length());
                     System.out.println(distributorNode.getShell()
                             .concat(fileName).concat(" comment - ").concat(comment));
                     if (COMMENT.toLowerCase().equals(command.substring(0, command.indexOf(" ")).trim())) {
