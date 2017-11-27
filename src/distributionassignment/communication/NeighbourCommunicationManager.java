@@ -163,17 +163,17 @@ public class NeighbourCommunicationManager {
                     int length = message.length() + 5;
                     String messageToSend = commonSupport.getFormattedNumber(length, 4).concat(BLANK).concat(message);
                     sender.sendMessage(messageToSend, newNode.getIp(), newNode.getPort());
-//                    ArrayList<FileDetail> fileList = distributorNode.getTextStore().getFiles();
-//                    for (FileDetail file : fileList) {
-//                        if(file.getFileRate() != -1) {
-//                            rateFileInNetwork(file.getFileName().replace(" ", "_"), String.valueOf(file.getFileRate()), distributorNode);
-//                        }
-//                        if(file.getCommentList().isEmpty() != true) {
-//                            for (String comment : file.getCommentList()) {
-//                                commentFileInNetwork(file.getFileName().replace(" ", "_"), comment, distributorNode);
-//                            }
-//                        }
-//                    }
+                    ArrayList<FileDetail> fileList = distributorNode.getTextStore().getFiles();
+                    for (FileDetail file : fileList) {
+                        if(file.getFileRate() != -1) {
+                            rateFileInNetwork(file.getFileName().replace(" ", "_"), String.valueOf(file.getFileRate()), file.getFileRateCount(), distributorNode);
+                        }
+                        if(file.getCommentList().isEmpty() != true) {
+                            for (String comment : file.getCommentList()) {
+                                commentFileInNetwork(file.getFileName().replace(" ", "_"), comment.replace(" ", "_") , distributorNode);
+                            }
+                        }
+                    }
                 } else {
                     //send JOINOK with 9999
                     String message = JOINOK.concat(BLANK).concat("9999");
