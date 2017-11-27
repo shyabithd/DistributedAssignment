@@ -51,7 +51,7 @@ public class NeighbourCommunicationManager {
         }
     }
     
-    public void rateFileInNetwork(String fileName, String fileRate, Node distributorNode) {
+    public void rateFileInNetwork(String fileName, String fileRate, int count, Node distributorNode) {
         System.out.println(distributorNode.getShell()
                 .concat("Rating in the network..."));
 
@@ -62,6 +62,7 @@ public class NeighbourCommunicationManager {
                 , distributorNode.getNodeIdentifier()
                 , fileName
                 , fileRate
+                , String.valueOf(count)
                 , "1"
                 , uniqueId);
 
@@ -99,7 +100,7 @@ public class NeighbourCommunicationManager {
             ArrayList<FileDetail> fileList = distributorNode.getTextStore().getFiles();
             for (FileDetail file : fileList) {
                 if(file.getFileRate() != -1) {
-                    rateFileInNetwork(file.getFileName().replace(" ", "_"), String.valueOf(file.getFileRate()), distributorNode);
+                    rateFileInNetwork(file.getFileName().replace(" ", "_"), String.valueOf(file.getFileRate()), file.getFileRateCount(), distributorNode);
                 }
                 if(file.getCommentList().isEmpty() != true) {
                     for (String comment : file.getCommentList()) {
@@ -162,17 +163,17 @@ public class NeighbourCommunicationManager {
                     int length = message.length() + 5;
                     String messageToSend = commonSupport.getFormattedNumber(length, 4).concat(BLANK).concat(message);
                     sender.sendMessage(messageToSend, newNode.getIp(), newNode.getPort());
-                    ArrayList<FileDetail> fileList = distributorNode.getTextStore().getFiles();
-                    for (FileDetail file : fileList) {
-                        if(file.getFileRate() != -1) {
-                            rateFileInNetwork(file.getFileName().replace(" ", "_"), String.valueOf(file.getFileRate()), distributorNode);
-                        }
-                        if(file.getCommentList().isEmpty() != true) {
-                            for (String comment : file.getCommentList()) {
-                                commentFileInNetwork(file.getFileName().replace(" ", "_"), comment, distributorNode);
-                            }
-                        }
-                    }
+//                    ArrayList<FileDetail> fileList = distributorNode.getTextStore().getFiles();
+//                    for (FileDetail file : fileList) {
+//                        if(file.getFileRate() != -1) {
+//                            rateFileInNetwork(file.getFileName().replace(" ", "_"), String.valueOf(file.getFileRate()), distributorNode);
+//                        }
+//                        if(file.getCommentList().isEmpty() != true) {
+//                            for (String comment : file.getCommentList()) {
+//                                commentFileInNetwork(file.getFileName().replace(" ", "_"), comment, distributorNode);
+//                            }
+//                        }
+//                    }
                 } else {
                     //send JOINOK with 9999
                     String message = JOINOK.concat(BLANK).concat("9999");
@@ -464,6 +465,7 @@ public class NeighbourCommunicationManager {
                     if (localStore.size() > 0) {
                         
                         for (FileDetail file : localStore) {
+                            comment = comment.replace("_", " ");
                             file.addComment(comment);
                         }
                         //length RATEOK fileName rate IP port name hops filename1 filename2

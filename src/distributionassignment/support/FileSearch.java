@@ -20,17 +20,19 @@ public class FileSearch {
     
     public void rateFile(String fileName, String fileRate) {
         ArrayList<FileDetail> localStore = searchLocalStore(fileName);
+        int rateCount = 1;
         for (FileDetail file : localStore) {
             file.setFileRate(Double.parseDouble(fileRate));
+            rateCount = file.getFileRateCount();
         }
-        distributor.getNeighbourCommunicationManager().rateFileInNetwork(fileName.replace(" ", "_"), fileRate, distributor);
+        distributor.getNeighbourCommunicationManager().rateFileInNetwork(fileName.replace(" ", "_"), fileRate, rateCount, distributor);
     }
     public void fileComment(String fileName, String comment) {
         ArrayList<FileDetail> localStore = searchLocalStore(fileName);
         for (FileDetail file : localStore) {
             file.addComment(comment);
         }
-        distributor.getNeighbourCommunicationManager().commentFileInNetwork(fileName.replace(" ", "_"), comment, distributor);
+        distributor.getNeighbourCommunicationManager().commentFileInNetwork(fileName.replace(" ", "_"), comment.replace(" ", "_"), distributor);
     }
     public ArrayList<FileDetail> searchLocalStore(String fileName) {
         System.out.println("\nSearching local file store ...");

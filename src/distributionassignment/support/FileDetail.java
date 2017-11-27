@@ -29,8 +29,13 @@ public class FileDetail {
         this.rateCount++;
     }
     
+    public int getFileRateCount() {
+        return this.rateCount;
+    }
     public void addComment(String Comment) {
-        this.commentList.add(Comment);
+        if (this.commentList.contains(Comment) == false) {
+            this.commentList.add(Comment);
+        }
     }
     public String getFileName() {
         return fileName;
